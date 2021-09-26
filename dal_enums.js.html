@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: routes/index.js</title>
+    <title>JSDoc: Source: dal/enums.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: routes/index.js</h1>
+    <h1 class="page-title">Source: dal/enums.js</h1>
 
     
 
@@ -27,22 +27,44 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file A Index Router
- * @overview Manages the Index Endpoints a
+ * Enums required to make handling constants much easier.
+ * @module Enums
+ * 
  */
-var express = require('express');
-var router = express.Router();
-/**
- * @param  {} '/'
- * @param  {} function(req
- * @param  {} res
- * @param  {} next
- */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
-module.exports = router;
+/** 
+ * Enum for types of *Trade Transactions*
+ * @readonly
+ * @enum {string}
+*/
+const _TradeType = {
+    /** This means the trade is a Buy Operation */
+    BUY: 'B',
+    /** This means the trade is a Sell Operation */
+    SELL: 'S'
+};
+export { _TradeType as TradeType };
+
+/** 
+ * Enum for types of updates for a Trade in Changelog.
+ * These types will be used to denote what has changed 
+ * in a particular trade entry.
+ * @readonly
+ * @enum {string}
+*/
+const _ChangeType = {
+    /** trade happened for the _first time_ */
+    CREATE: 'C',
+    /**  trade is _deleted_ */
+    DELETE: 'D',
+    /** Trade the values in a trade are being modified */
+    VALUE: 'V',
+    /** denotes a SELL Trade has been updated to a SELL*/
+    UPDATE_TO_BUY: 'S',
+    /** denotes a BUY Trade has been updated to a SELL */
+    UPDATE_TO_SELL: 'B',
+};
+export { _ChangeType as ChangeType };
 </code></pre>
         </article>
     </section>

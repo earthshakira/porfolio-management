@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: routes/index.js</title>
+    <title>JSDoc: Source: dal/backend.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: routes/index.js</h1>
+    <h1 class="page-title">Source: dal/backend.js</h1>
 
     
 
@@ -27,23 +27,12 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file A Index Router
- * @overview Manages the Index Endpoints a
+ * This Module is used as an abstraction, incase we need
+ * to switch the backend at a later stage we can do it 
+ * at this single point rather than at all the usages
+ * @module Backend
  */
-var express = require('express');
-var router = express.Router();
-/**
- * @param  {} '/'
- * @param  {} function(req
- * @param  {} res
- * @param  {} next
- */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
-</code></pre>
+export * from "./redisbackend";</code></pre>
         </article>
     </section>
 
