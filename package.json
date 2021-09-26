@@ -10,7 +10,6 @@
     "watch:docs": "npm run watch:doc-output & npm run watch:doc-src",
     "serve:docs": "cd docs && python -m SimpleHTTPServer",
     "docs:dev": "npm run build:docs && npm run watch:docs & npm run serve:docs"
-
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -20,7 +19,9 @@
     "jest": "^27.2.2",
     "jsdoc": "^3.6.7",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "swagger-ui-express": "^4.1.6",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "livereload": "^0.9.3",
