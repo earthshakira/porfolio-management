@@ -1,6 +1,5 @@
 /**
- * A Index Router
- * @module wassup_module
+ * @file A Index Router
  * @overview Manages the Index Endpoints a
  */
 var express = require('express');

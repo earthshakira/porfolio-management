@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build:docs": "npx jsdoc routes views app.js",
-    "watch:doc-src": "npx nodemon --exec 'npm run build:docs' --watch src",
-    "watch:doc-output": "npx livereload out",
+    "build:docs": "npx jsdoc -c jsdoc.json",
+    "watch:doc-src": "npx nodemon --exec 'npm run build:docs' --watch dal --watch routes --watch views --watch app.js",
+    "watch:doc-output": "npx livereload docs",
     "watch:docs": "npm run watch:doc-output & npm run watch:doc-src",
-    "serve:docs": "cd out && python -m SimpleHTTPServer",
+    "serve:docs": "cd docs && python -m SimpleHTTPServer",
     "docs:dev": "npm run build:docs && npm run watch:docs & npm run serve:docs"
 
   },

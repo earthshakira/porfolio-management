@@ -1,0 +1,18 @@
+{
+    "source": {
+      "include": ["dal","routes","views","app.js","jsdoc.json"],
+      "includePattern": ".js$",
+      "excludePattern": "(node_modules/|docs)"
+    },
+    "plugins": ["plugins/markdown"],
+    "templates": {
+      "cleverLinks": true,
+      "monospaceLinks": true
+    },
+    "opts": {
+      "recurse": true,
+      "destination": "./docs/",
+      "template": "./jsdoc-template",
+      "readme": "README.md"
+    }
+  }
