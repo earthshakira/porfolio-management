@@ -72,6 +72,11 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/TradePayload"
+        example:
+          tickerSymbol: TCS
+          price: 100
+          quantity: 20
+          tradeType: BUY
       responses:
         "200":
           description: "successful operation"
@@ -186,16 +191,10 @@ definitions:
       quantity:
         type: "integer"
         format: "int32"
-      
-      tradeTime:
-        type: "string"
-        format: "date-time"
       tradeType:
         type: "string"
         description: "TradeType"
-        enum:
-        - "BUY"
-        - "SELL"
+        enum: [BUY, SELL]
   Trade:
     type: "object"
     allOf:

@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "npx nodemon --delay 1000 --exec 'npm start' --watch dal --watch routes --watch views --watch app.js",
-    "build:docs": "npx nodemon --exec 'npm run build:docs' --watch dal --watch routes --watch views --watch app.js",
+    "dev": "npx nodemon --exec 'npm start' --watch dal --watch routes --watch views --watch app.js",
+    "build:docs": "jsdoc -c jsdoc.json",
     "watch:doc-src": "npx nodemon --exec 'npm run build:docs' --watch dal --watch routes --watch views --watch app.js",
     "watch:doc-output": "npx livereload docs",
     "watch:docs": "npm run watch:doc-output & npm run watch:doc-src",
@@ -22,6 +22,7 @@
     "jest": "^27.2.2",
     "jsdoc": "^3.6.7",
     "morgan": "~1.9.1",
+    "promisify": "^0.0.3",
     "pug": "2.0.0-beta11",
     "redis": "^3.1.2",
     "swagger-ui-express": "^4.1.6",

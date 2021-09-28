@@ -56,6 +56,10 @@ header
 
 tt, code, kbd, samp {
     font-family: Consolas, Monaco, 'Andale Mono', monospace;
+    /* background-color: #f3f3f3;
+    border: 1px solid lightslategray;
+    border-radius: 4px;
+    padding: 1px; */
 }
 
 .class-description {
