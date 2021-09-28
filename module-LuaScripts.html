@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: LuaScripts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: LuaScripts</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>These Lua scripts are meant for redis <code>EVAL</code> method.
+As Redis is single threaded, the <code>EVAL</code> method is
+<em>Atomic</em>. This property is important if we want to
+ensure concistency in operations that involve
+check-and-set behaviour</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dal_lua_scripts.js.html">dal/lua/scripts.js</a>, <a href="dal_lua_scripts.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".buySecurity"><span class="type-signature">(static) </span>buySecurity<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>buying security does the following</p>
+<ol>
+<li>calculate a <code>tradeId</code> from a monotonically increasing key <code>tradeId.{user}</code></li>
+<li>update the totalBuyPrice,shares and average buy price in the users portfolio</li>
+<li>uses <code>msgpk</code> to store the trade for update calculations</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dal_lua_scripts.js.html">dal/lua/scripts.js</a>, <a href="dal_lua_scripts.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".createUser"><span class="type-signature">(static) </span>createUser<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>The createuser adds 2 keys to redis</p>
+<ul>
+<li><code>user.{username} = {password}</code> , this is used to ensure unique usernames and update passwords</li>
+<li><code>auth.{username}:{password} = 1</code> , this is used as a fast way to authenticate users to find username password matches</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dal_lua_scripts.js.html">dal/lua/scripts.js</a>, <a href="dal_lua_scripts.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".sellSecurity"><span class="type-signature">(static) </span>sellSecurity<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>buying security does the following</p>
+<ol>
+<li>calculate a <code>tradeId</code> from a monotonically increasing key <code>tradeId.{user}</code></li>
+<li>Decrease the quantity of stocks and check value
+<ol>
+<li>if value is less than 0 then roll back and return error</li>
+<li>else goto 3</li>
+</ol>
+</li>
+<li>update the totalBuyPrice the users portfolio</li>
+<li>uses <code>msgpk</code> to store the trade for update calculations</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dal_lua_scripts.js.html">dal/lua/scripts.js</a>, <a href="dal_lua_scripts.js.html#line32">line 32</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Backend.html">Backend</a></li><li><a href="module-Enums.html">Enums</a></li><li><a href="module-LuaScripts.html">LuaScripts</a></li><li><a href="module-Models.html">Models</a></li><li><a href="module-Redis%2520Backend.html">Redis Backend</a></li><li><a href="module-TradeEndpoints.html">TradeEndpoints</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models.Trade.html">Trade</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Sep 28 2021 23:44:58 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
