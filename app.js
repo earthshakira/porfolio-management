@@ -7,23 +7,35 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/user');
+const tradesRouter = require('./routes/trades');
+const portfolioRouter = require('./routes/portfolio');
+const returnsRouter = require('./routes/returns');
+const basicAuth = require('express-basic-auth')
+const backend = require('./dal/backend');
 
+backend.init()
 const app = express();
+const authMiddleware = basicAuth( {
+  authorizer: backend.userAuthorizer,
+  authorizeAsync: true,
+} );
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
+app.use('/trade', authMiddleware,tradesRouter);
+app.use('/portfolio',authMiddleware, portfolioRouter);
+app.use('/returns', authMiddleware, returnsRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

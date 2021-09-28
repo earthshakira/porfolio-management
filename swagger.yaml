@@ -16,8 +16,9 @@ tags:
   description: "Everything about your Portfolio"
 
 schemes:
-- "https"
 - "http"
+- "https"
+
 paths:
   /portfolio:
     get:
@@ -151,7 +152,7 @@ paths:
           description: "Invalid ID supplied"
         "404":
           description: "Trade not found"
-  /user:
+  /user/:
     post:
       tags:
       - "user"

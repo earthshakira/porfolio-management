@@ -17,6 +17,11 @@ jobs:
           node-version: 16.x
           cache: npm
 
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.2.0
+        with:
+          redis-version: ${{ matrix.redis-version }}
+          
       - name: Install Dependencies
         shell: bash
         run: npm install --include dev

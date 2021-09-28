@@ -4,26 +4,31 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build:docs": "npx jsdoc -c jsdoc.json",
+    "dev": "npx nodemon --delay 1000 --exec 'npm start' --watch dal --watch routes --watch views --watch app.js",
+    "build:docs": "npx nodemon --exec 'npm run build:docs' --watch dal --watch routes --watch views --watch app.js",
     "watch:doc-src": "npx nodemon --exec 'npm run build:docs' --watch dal --watch routes --watch views --watch app.js",
     "watch:doc-output": "npx livereload docs",
     "watch:docs": "npm run watch:doc-output & npm run watch:doc-src",
     "serve:docs": "cd docs && python -m SimpleHTTPServer",
-    "docs:dev": "npm run build:docs && npm run watch:docs & npm run serve:docs"
+    "docs:dev": "npm run build:docs && npm run watch:docs & npm run serve:docs",
+    "test": "jest --detectOpenHandles"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-basic-auth": "^1.2.0",
     "http-errors": "~1.6.3",
     "jest": "^27.2.2",
     "jsdoc": "^3.6.7",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
+    "redis": "^3.1.2",
     "swagger-ui-express": "^4.1.6",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "jest-html-reporters": "^2.1.6",
     "livereload": "^0.9.3",
     "nodemon": "^2.0.13"
   }

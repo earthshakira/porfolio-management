@@ -1,0 +1,7 @@
+{
+  "name": "portfolio-management",
+  "reporters": [
+    "default",
+    "jest-html-reporters"
+  ]
+}

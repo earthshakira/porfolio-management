@@ -4,4 +4,8 @@
  * at this single point rather than at all the usages
  * @module Backend
  */
-export * from "./redisbackend";
+
+const backend = require("./redisbackend") 
+
+
+module.exports = backend;
