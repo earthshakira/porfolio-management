@@ -71,3 +71,11 @@ exports.sellSecurity = fs.readFileSync('./dal/lua/sellSecurity.lua')
  * 
  */
 exports.updateSecurity = fs.readFileSync('./dal/lua/updateTrade.lua')
+
+
+/** 
+ * {@link https://github.com/earthshakira/portfolio-management/blob/master/dal/lua/getAllTrades.lua| Get All Trades Script Source (.lua)} 
+ * 
+ * 
+ */
+ exports.getAllTrades = fs.readFileSync('./dal/lua/getAllTrades.lua')

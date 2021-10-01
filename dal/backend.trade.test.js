@@ -2,7 +2,7 @@ const { expect } = require('@jest/globals');
 const { ReplyError } = require('redis');
 const { async } = require('regenerator-runtime');
 const backend = require('./backend')
-const {Trade} = require('./models')
+const {Trade, TradeList} = require('./models')
 
 beforeAll(async() => {
     backend.init()
@@ -123,4 +123,25 @@ test('DeleteTrade Error',async () => {
     let tradeUpdate = new Trade('test')
     order = tradeUpdate.delete(order.tradeId)
     expect(order).rejects.toEqual(new ReplyError("Update is inconsistent"))
+})
+
+test('ListTrades',async () => {
+    let trade = new Trade('listTradesTest','B','listA',100.50,10).order()
+    trade = new Trade('listTradesTest','B','listB',10.50,10).order()
+    trade = new Trade('listTradesTest','B','listA',100.50,10).order()
+    trade = new Trade('listTradesTest','B','listC',100.50,10).order()
+    trade = new Trade('listTradesTest','S','listA',100.50,10).order()
+
+
+    let tl = new TradeList('listTradesTest')
+    
+    expect(await tl.get()).toEqual({
+        listA: [
+          {tradeId: 1,tradeType: 'BUY',symbol: 'listA',quantity: 10,price: '100.50'},
+          {tradeId: 3,tradeType: 'BUY',symbol: 'listA',quantity: 10,price: '100.50'},
+          {tradeId: 5,tradeType: 'SELL',symbol: 'listA',quantity: 10,price: '100.50'}
+        ],
+        listB: [{tradeId: 2,tradeType: 'BUY',symbol: 'listB',quantity: 10,price: '10.50'}],
+        listC: [{tradeId: 4,tradeType: 'BUY',symbol: 'listC',quantity: 10,price: '100.50'}]
+      })
 })

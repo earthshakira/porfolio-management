@@ -12,6 +12,7 @@ const backend = require('./backend')
  */
 exports.Trade = class {
     /**
+     * @param  {string} user user who did this trade
      * @param  {TradeType} type Type of the trade ('B'|'S')
      * @param  {string} symbol The ticker symol for this trade
      * @param  {number} price The average amount per share for the trade
@@ -56,8 +57,49 @@ exports.Trade = class {
     }
 }
 
+
+exports.TradeList = class {
+    /**
+     * @param  {string} user user who did this trade
+     */
+     constructor(user){
+        this.user = user
+    }
+
+    async get() {
+        let trades = await backend.getAllTrades(this.user)
+        let tradesMap = {}
+        trades.forEach(trade => {
+            if(!tradesMap[trade.symbol]) {
+                tradesMap[trade.symbol] = []
+            }
+            trade.tradeType = trade.tradeType === 'B' ? "BUY" : "SELL"
+            trade.price = (trade.amount/trade.quantity/100).toFixed(2)
+            delete trade.amount
+            tradesMap[trade.symbol].push(trade)
+        })
+        return tradesMap
+    }
+}
 exports.Portfolio = class {
     constructor(user){
+        this.user = user
+    }
 
+    async get() {
+        let items = await backend.getPortfolio(this.user)
+        items.forEach(trade => {
+            trade.price = (trade.price/100).toFixed(2)
+            trade.amount = (trade.amount/100).toFixed(2)
+        })
+
+        items.sort((a,b) => {
+            if (a.tickerSymbol < b.tickerSymbol)
+                return -1
+            else if (a.tickerSymbol > b.tickerSymbol)
+                return 1
+            return 0
+        })
+        return items
     }
 }

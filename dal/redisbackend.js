@@ -19,6 +19,21 @@ let prefix = "p"
 let ops = {}
 
 const decodeTrade = (r) => ({tradeId: r[0],tickerSymbol: r[1],totalCost: r[2],totalShares: r[3],averagePrice: r[4]})
+const decodeListTrade = (r) => ({tradeId: r[0],tradeType: r[1],symbol: r[2],amount: r[3],quantity: r[4]})
+const decodePortfolio = (items) => {
+  if(!items)
+    return []
+  let portfolio = {}
+  let attributeMap = {'a':'price','p':'amount','q':'shares'}
+  Object.entries(items).forEach(([k,v]) => {
+    let [symbol,attr] =k.split(".")
+    if (!portfolio[symbol]){
+      portfolio[symbol] = {'tickerSymbol':symbol}
+    }
+    portfolio[symbol][attributeMap[attr]] = parseInt(v)
+  })
+  return Object.values(portfolio)
+}
 
 /**
  * The init function initializes the Redis connection and creates promisified of redis operations like `EVAL`,`GET` and `FLUSHALL`
@@ -32,6 +47,7 @@ exports.init = function() {
     EVAL: promisify(client.eval).bind(client),
     FLUSHALL: promisify(client.flushall).bind(client),
     GET: promisify(client.get).bind(client),
+    HGETALL: promisify(client.hgetall).bind(client),
   }
 }
 
@@ -102,6 +118,27 @@ exports.updateSecurity = async function(tradeId,user,tickerSymbol,price,quantity
   }
   let r = await ops.EVAL([scripts.updateSecurity,0,user,tickerSymbol,price,quantity,tradeId,type,isDelete||'0'])
   return decodeTrade(r)
+}
+
+/**
+ * Gets all the trades for a user
+ * @param  {string} username
+ */
+ exports.getAllTrades = async function(username) {
+  let r = await ops.EVAL([scripts.getAllTrades,0,username])
+  if(!r)
+    return []
+  r = r.map(decodeListTrade)
+  return r
+}
+
+/**
+ * Gets the portfolio for a user
+ * @param  {string} username
+ */
+ exports.getPortfolio = async function(username) {
+  let r = await ops.HGETALL([`portfolio.${username}`])
+  return decodePortfolio(r)
 }
 
 exports.close = async function() {
