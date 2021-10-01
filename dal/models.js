@@ -78,7 +78,13 @@ exports.TradeList = class {
             delete trade.amount
             tradesMap[trade.symbol].push(trade)
         })
-        return tradesMap
+        
+        return Object.entries(tradesMap).map(([k,v]) => {
+            return {
+                symbol: k,
+                trades: v
+            }
+        })
     }
 }
 exports.Portfolio = class {

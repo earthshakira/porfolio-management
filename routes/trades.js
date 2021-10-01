@@ -2,7 +2,6 @@
  * @module TradeEndpoints
  */
 const express = require('express');
-const backend = require('../dal/backend');
 const models = require('../dal/models');
 
 /**
@@ -52,9 +51,9 @@ let validateTradePayload = (payload) => {
     return errors
 }
 
-router.get('/', function(req, res) {
-  console.log("req",req.body)
-  res.json(req.body)
+router.get('/', async function(req, res) {
+  let tl = new models.TradeList(req.auth.user)
+  res.json(await tl.get())
 });
 
 
@@ -79,14 +78,71 @@ router.post('/', async function(req, res) {
     
 });
 
-router.put('/:tradeId/', function(req, res, next) {
-    console.log("req",req.body)
-    res.json(req.body);
+router.put('/:tradeId/', async function(req, res, next) {
+    let payload = req.body
+    let type = 'B'
+    let errors = validateTradePayload(payload)
+    if (errors.length) {
+        res.status(400)
+        res.json(errors)
+        return
+    }
+    try {
+        let {tradeType,tickerSymbol,price,quantity} = payload;
+        let trade = new models.Trade(req.auth.user,tradeType == 'BUY' ? 'B' : 'S',tickerSymbol,price,quantity)
+        let resp = await trade.update(req.params.tradeId)
+        res.json(resp)
+    } catch(error) {
+        res.status(400);
+        res.json([error.toString()])
+    }
 });
 
-router.delete('/:tradeId/', function(req, res, next) {
-    console.log("req",req.body)
-    res.json(req.body);
+router.patch('/:tradeId/', async function(req, res, next) {
+    let payload = req.body
+    let {tradeType,tickerSymbol,price,quantity} = payload;
+    let errors = []
+
+    if ('tradeType' in payload){
+        errors.push(validateTradeType(payload))
+    }
+    if ('price' in payload){
+        errors.push(validatePrice(payload))
+    }
+    if ('quantity' in payload){
+        errors.push(validateQuantity(payload))
+    }
+
+    if (errors.length) {
+        res.status(400)
+        res.json(errors)
+        return
+    }
+    
+
+    
+    try {
+        if (tradeType)
+            tradeType == 'BUY' ? 'B' : 'S'
+        let trade = new models.Trade(req.auth.user,tradeType,tickerSymbol,price,quantity)
+        let resp = await trade.update(req.params.tradeId)
+        res.json(resp)
+    } catch(error) {
+        res.status(400);
+        res.json([error.toString()])
+    }
+});
+
+router.delete('/:tradeId/', async function(req, res, next) {
+    try {
+        let trade = new models.Trade(req.auth.user)
+        let resp = await trade.delete(req.params.tradeId)
+        res.status(204)
+        res.json(resp)
+    } catch(error) {
+        res.status(400);
+        res.json([error.toString()])
+    }
 });
 
 module.exports = router;

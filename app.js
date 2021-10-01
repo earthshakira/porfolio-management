@@ -24,7 +24,8 @@ const authMiddleware = basicAuth( {
 
 // view engine setup
 app.use(cors({
-  origin: '*'
+  origin: '*',
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,PATCH",
 }))
 
 app.set('views', path.join(__dirname, 'views'));
