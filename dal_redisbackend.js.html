@@ -75,7 +75,7 @@
 
     
 
-    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
+    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li><li id="TradeList-nav"><a href="module-Models.TradeList.html">TradeList</a></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-getAllTrades-nav"><a href="module-RedisBackend.html#.getAllTrades">getAllTrades</a></li><li data-type="method" id="RedisBackend-getPortfolio-nav"><a href="module-RedisBackend.html#.getPortfolio">getPortfolio</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
   </nav>
 
   <div id="main">
@@ -111,6 +111,21 @@ let prefix = "p"
 let ops = {}
 
 const decodeTrade = (r) => ({tradeId: r[0],tickerSymbol: r[1],totalCost: r[2],totalShares: r[3],averagePrice: r[4]})
+const decodeListTrade = (r) => ({tradeId: r[0],tradeType: r[1],symbol: r[2],amount: r[3],quantity: r[4]})
+const decodePortfolio = (items) => {
+  if(!items)
+    return []
+  let portfolio = {}
+  let attributeMap = {'a':'price','p':'amount','q':'shares'}
+  Object.entries(items).forEach(([k,v]) => {
+    let [symbol,attr] =k.split(".")
+    if (!portfolio[symbol]){
+      portfolio[symbol] = {'tickerSymbol':symbol}
+    }
+    portfolio[symbol][attributeMap[attr]] = parseInt(v)
+  })
+  return Object.values(portfolio)
+}
 
 /**
  * The init function initializes the Redis connection and creates promisified of redis operations like `EVAL`,`GET` and `FLUSHALL`
@@ -124,6 +139,7 @@ exports.init = function() {
     EVAL: promisify(client.eval).bind(client),
     FLUSHALL: promisify(client.flushall).bind(client),
     GET: promisify(client.get).bind(client),
+    HGETALL: promisify(client.hgetall).bind(client),
   }
 }
 
@@ -194,6 +210,27 @@ exports.updateSecurity = async function(tradeId,user,tickerSymbol,price,quantity
   }
   let r = await ops.EVAL([scripts.updateSecurity,0,user,tickerSymbol,price,quantity,tradeId,type,isDelete||'0'])
   return decodeTrade(r)
+}
+
+/**
+ * Gets all the trades for a user
+ * @param  {string} username
+ */
+ exports.getAllTrades = async function(username) {
+  let r = await ops.EVAL([scripts.getAllTrades,0,username])
+  if(!r)
+    return []
+  r = r.map(decodeListTrade)
+  return r
+}
+
+/**
+ * Gets the portfolio for a user
+ * @param  {string} username
+ */
+ exports.getPortfolio = async function(username) {
+  let r = await ops.HGETALL([`portfolio.${username}`])
+  return decodePortfolio(r)
 }
 
 exports.close = async function() {

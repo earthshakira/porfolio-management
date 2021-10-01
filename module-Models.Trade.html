@@ -73,7 +73,7 @@
 
     
 
-    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
+    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li><li id="TradeList-nav"><a href="module-Models.TradeList.html">TradeList</a></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-getAllTrades-nav"><a href="module-RedisBackend.html#.getAllTrades">getAllTrades</a></li><li data-type="method" id="RedisBackend-getPortfolio-nav"><a href="module-RedisBackend.html#.getPortfolio">getPortfolio</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
   </nav>
 
   <div id="main">
@@ -121,7 +121,7 @@
       </svg>
     </a>
     <h4 class="name" id="Trade">
-      <span class="type-signature"></span>new Trade<span class="signature">(type, symbol, price, shares)</span><span class="type-signature"></span>
+      <span class="type-signature"></span>new Trade<span class="signature">(user, type, symbol, price, shares)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -156,6 +156,35 @@
   </thead>
 
   <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>user</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+
+        
+
+        <td class="description last">
+          <p>user who did this trade</p>
+          
+        </td>
+      </tr>
+
     
       <tr>
         
@@ -401,7 +430,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="dal_models.js.html">dal/models.js</a>, <a href="dal_models.js.html#line27">line 27</a>
+          <a href="dal_models.js.html">dal/models.js</a>, <a href="dal_models.js.html#line28">line 28</a>
         </li>
       </ul>
     </dd>
@@ -491,7 +520,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="dal_models.js.html">dal/models.js</a>, <a href="dal_models.js.html#line32">line 32</a>
+          <a href="dal_models.js.html">dal/models.js</a>, <a href="dal_models.js.html#line33">line 33</a>
         </li>
       </ul>
     </dd>

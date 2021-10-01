@@ -75,7 +75,7 @@
 
     
 
-    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
+    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li><li id="TradeList-nav"><a href="module-Models.TradeList.html">TradeList</a></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-getAllTrades-nav"><a href="module-RedisBackend.html#.getAllTrades">getAllTrades</a></li><li data-type="method" id="RedisBackend-getPortfolio-nav"><a href="module-RedisBackend.html#.getPortfolio">getPortfolio</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
   </nav>
 
   <div id="main">
@@ -104,6 +104,7 @@ const backend = require('./backend')
  */
 exports.Trade = class {
     /**
+     * @param  {string} user user who did this trade
      * @param  {TradeType} type Type of the trade ('B'|'S')
      * @param  {string} symbol The ticker symol for this trade
      * @param  {number} price The average amount per share for the trade
@@ -148,9 +149,50 @@ exports.Trade = class {
     }
 }
 
+
+exports.TradeList = class {
+    /**
+     * @param  {string} user user who did this trade
+     */
+     constructor(user){
+        this.user = user
+    }
+
+    async get() {
+        let trades = await backend.getAllTrades(this.user)
+        let tradesMap = {}
+        trades.forEach(trade => {
+            if(!tradesMap[trade.symbol]) {
+                tradesMap[trade.symbol] = []
+            }
+            trade.tradeType = trade.tradeType === 'B' ? "BUY" : "SELL"
+            trade.price = (trade.amount/trade.quantity/100).toFixed(2)
+            delete trade.amount
+            tradesMap[trade.symbol].push(trade)
+        })
+        return tradesMap
+    }
+}
 exports.Portfolio = class {
     constructor(user){
+        this.user = user
+    }
 
+    async get() {
+        let items = await backend.getPortfolio(this.user)
+        items.forEach(trade => {
+            trade.price = (trade.price/100).toFixed(2)
+            trade.amount = (trade.amount/100).toFixed(2)
+        })
+
+        items.sort((a,b) => {
+            if (a.tickerSymbol &lt; b.tickerSymbol)
+                return -1
+            else if (a.tickerSymbol > b.tickerSymbol)
+                return 1
+            return 0
+        })
+        return items
     }
 }</code></pre>
   </article>
