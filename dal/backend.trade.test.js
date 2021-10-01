@@ -103,7 +103,7 @@ test('DeleteTrade',async () => {
     console.log(order)
     let tradeUpdate = new Trade('test')
     order = await tradeUpdate.delete(order.tradeId)
-    console.log(order)
+    console.log("Delete Order",order)
     expect(order.averagePrice).toBe('0.00')
     expect(order.totalShares).toBe(0)
     expect(order.totalCost).toBe("0.00")

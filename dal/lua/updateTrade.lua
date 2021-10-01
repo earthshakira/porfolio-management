@@ -202,4 +202,10 @@ else    -- Symbol has changed so we perform a delete type operation and add oper
     redis.call('ZADD','symbol.'..ARGV[1]..'.'..ARGV[2],ptradeId,trade)
     redis.call('HSET',portfolio,newSymbol..'.p',bstateAmount,newSymbol..'.q',bstateQuantity,newSymbol..'.a',bstateAmount/bstateQuantity)
 end
-return {ptradeId,rSymbol,rAmount,rQuantity,rAmount/rQuantity}
+
+local av = 0
+if rQuantity > 0 then
+    av = rAmount/rQuantity
+end
+
+return {ptradeId,rSymbol,rAmount,rQuantity,av}
