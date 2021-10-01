@@ -1,7 +1,12 @@
 /**
  * This is an implementation for the backend, which handles all calls to redis 
  * It also formats input and output to make it more usable for our case
- * @module Redis Backend
+ * 
+ *    | Keys        | Description |
+ *    | ----------- | ----------- |
+ *    | auth.{username}:{password}      | Title       |
+ *    | user.{username}   | {password}        |
+ * @module RedisBackend
  */
 
 const redis = require("redis");
