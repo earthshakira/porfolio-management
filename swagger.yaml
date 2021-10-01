@@ -137,6 +137,38 @@ paths:
           description: "Invalid ID supplied"
         "404":
           description: "Trade not Found"
+    patch:
+      tags:
+      - "trade"
+      summary: "Partially Modify trade by ID"
+      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
+      security:
+      - basicAuth: []
+      produces:
+      - "application/json"
+      parameters:
+      - name: "orderId"
+        in: "path"
+        description: "ID of the trade that needs to be modified"
+        required: true
+        type: "integer"
+        minimum: 1.0
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Trade placed"
+        required: true
+        schema:
+          $ref: "#/definitions/TradePayload"
+      responses:
+        "200":
+          description: "Trade Updated Successfully"
+          schema:
+            $ref: "#/definitions/Trade"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Trade not Found"
     delete:
       tags:
       - "trade"

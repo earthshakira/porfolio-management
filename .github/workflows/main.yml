@@ -1,3 +1,4 @@
+name: "Testing and Documentation"
 
 on:
   push:
@@ -5,7 +6,7 @@ on:
       - master
 
 jobs:
-  documentation:
+  testing-and-documentation:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,7 +21,7 @@ jobs:
       - name: Start Redis
         uses: supercharge/redis-github-action@1.2.0
         with:
-          redis-version: ${{ matrix.redis-version }}
+          redis-version: 6.2.5
           
       - name: Install Dependencies
         shell: bash
@@ -29,6 +30,14 @@ jobs:
       - name: Build Documentation
         shell: bash
         run: npm run build:docs
+      
+      - name: Run Tests and Build Reports
+        shell: bash
+        run: npm run test
+      
+      - name: Copy Test Reports to Site
+        shell: bash
+        run: cp ./jest_html_reporters.html ./docs
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

@@ -38,7 +38,7 @@ const decodePortfolio = (items) => {
 /**
  * The init function initializes the Redis connection and creates promisified of redis operations like `EVAL`,`GET` and `FLUSHALL`
  */
-exports.init = function() {
+exports.init = async function() {
   client = redis.createClient(REDIS_URL);
   keys = {
     USER: `${prefix}.user`,
@@ -49,6 +49,14 @@ exports.init = function() {
     GET: promisify(client.get).bind(client),
     HGETALL: promisify(client.hgetall).bind(client),
   }
+  return new Promise((resolve, reject) => {
+    client.on('ready', () => resolve(client));
+    client.on('error', (redisError) => {
+      console.log('Error connecting Redis', redisError.message);
+      client.quit();
+      return reject(redisError);
+    });
+  });
 }
 
 /**

@@ -5,7 +5,7 @@ const backend = require('./backend')
 const {Trade, TradeList} = require('./models')
 
 beforeAll(async() => {
-    backend.init()
+    await backend.init()
     await backend.reset()
 });
 

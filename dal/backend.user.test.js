@@ -7,7 +7,7 @@ const {promisify} = require('util')
 let asyncAuthorizer = promisify(backend.userAuthorizer).bind(backend)
 
 beforeAll(async() => {
-    backend.init()
+    await backend.init()
     await backend.reset()
 });
 
@@ -25,10 +25,11 @@ test('Duplicate User', async () => {
 test('User Authorization Success', async () => {
     
     let response = await asyncAuthorizer("test","test")
-    expect(response).toBe(true)
+    expect(response).toEqual(true)
 })
 
 test('User Authorization Failing', async () => {
     let response = await asyncAuthorizer("test","test2")
-    expect(response).toBe(false)
+    console.log(response)
+    expect(response).toEqual(false)
 })

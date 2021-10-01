@@ -11,7 +11,7 @@
     "watch:docs": "npm run watch:doc-output & npm run watch:doc-src",
     "serve:docs": "cd docs && python -m SimpleHTTPServer",
     "docs:dev": "npm run build:docs && npm run watch:docs & npm run serve:docs",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles -i"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
