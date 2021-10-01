@@ -33,7 +33,7 @@ exports.buySecurity = fs.readFileSync('./dal/lua/buySecurity.lua')
 /** 
  * {@link https://github.com/earthshakira/portfolio-management/blob/master/dal/lua/sellSecurity.lua| Sell Security Script Source (.lua)} 
  * 
- * buying security does the following
+ * selling security does the following
  *  1. calculate a `tradeId` from a monotonically increasing key `tradeId.{user}`
  *  2. Decrease the quantity of stocks and check value
  *      1. if value is less than 0 then roll back and return error
