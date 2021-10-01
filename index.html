@@ -103,11 +103,22 @@
   <section class="readme">
     <article>
       <h1>Portfolio Management</h1>
-<h2>ER Diagram</h2>
-<p><img src="https://i.imgur.com/QMOCYo4.png" alt="ER Diagram"></p>
-<h2>Persistent Redis</h2>
-<pre class="prettyprint source"><code>docker run --name some-redis -p6379:6379 -d redis redis-server --appendonly yes
+<h2>Important Links</h2>
+<ul>
+<li><a href="https://github.com/earthshakira/portfolio-management">Github Repo</a></li>
+<li><a href="https://earthshakira.github.io/portfolio-management/jest_html_reporters.html">Testing Report</a></li>
+<li><a href="https://shubham-ar-portfolio-mgmt.herokuapp.com/swagger/">Heroku Swagger Client</a></li>
+</ul>
+<h2>Local Setup Requirements</h2>
+<p>To setup locally the API needs the redis-server to be running</p>
+<p>TODO: add versrion to docer command</p>
+<pre class="prettyprint source lang-bash"><code>docker run --name some-redis -p6379:6379 -d redis:6.2.5 redis-server --appendonly yes
 </code></pre>
+<h2>API Design</h2>
+<p><img src="https://i.imgur.com/FWXLZ14.png" alt="System Overview"></p>
+<h3>ER Diagram</h3>
+<p><img src="https://i.imgur.com/QMOCYo4.png" alt="ER Diagram"></p>
+<h3></h3>
     </article>
   </section>
 
