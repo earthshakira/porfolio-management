@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
 const logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
@@ -22,6 +23,10 @@ const authMiddleware = basicAuth( {
 } );
 
 // view engine setup
+app.use(cors({
+  origin: '*'
+}))
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(logger('dev'));

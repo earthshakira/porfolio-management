@@ -6,7 +6,7 @@ info:
     email: "shubham.s.arawkar@gmail.com"
   version: "1.0.0"
   description: "Backend Assignment in Swagger"
-host: "localhost:3000"
+host: "shubham-ar-portfolio-mgmt.herokuapp.com"
 tags:
 - name: "user"
   description: "Basic User Creation for Basic Authentication to Work"
@@ -16,8 +16,9 @@ tags:
   description: "Everything about your Portfolio"
 
 schemes:
-- "http"
 - "https"
+- "http"
+
 
 paths:
   /portfolio:

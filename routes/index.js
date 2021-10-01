@@ -11,7 +11,7 @@ var router = express.Router();
  * @param  {} next
  */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.redirect('/swagger');
 });
 
 module.exports = router;
