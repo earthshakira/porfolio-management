@@ -74,7 +74,7 @@
       Github Repo
     </a><br>
     <a href="https://earthshakira.github.io/portfolio-management/jest_html_reporters.html" target="_blank">
-      Testing Report
+      CI Testing Report
     </a><br>
     <a href="https://shubham-ar-portfolio-mgmt.herokuapp.com/swagger/" target="_blank">
       Heroku Swagger Client
@@ -84,7 +84,7 @@
   
     
 
-    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li><li id="TradeList-nav"><a href="module-Models.TradeList.html">TradeList</a></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-getAllTrades-nav"><a href="module-RedisBackend.html#.getAllTrades">getAllTrades</a></li><li data-type="method" id="RedisBackend-getPortfolio-nav"><a href="module-RedisBackend.html#.getPortfolio">getPortfolio</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
+    <h3>Classes</h3><ul><li id="Portfolio-nav"><a href="module-Models.Portfolio.html">Portfolio</a><ul class='methods'><li data-type="method" id="Portfolio-get-nav"><a href="module-Models.Portfolio.html#get">get</a></li><li data-type="method" id="Portfolio-getReturns-nav"><a href="module-Models.Portfolio.html#getReturns">getReturns</a></li></ul></li><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-delete-nav"><a href="module-Models.Trade.html#delete">delete</a></li><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li><li data-type="method" id="Trade-update-nav"><a href="module-Models.Trade.html#update">update</a></li></ul></li><li id="TradeList-nav"><a href="module-Models.TradeList.html">TradeList</a><ul class='methods'><li data-type="method" id="TradeList-get-nav"><a href="module-Models.TradeList.html#get">get</a></li></ul></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-getAllTrades-nav"><a href="module-RedisBackend.html#.getAllTrades">getAllTrades</a></li><li data-type="method" id="RedisBackend-getPortfolio-nav"><a href="module-RedisBackend.html#.getPortfolio">getPortfolio</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
   </nav>
   
   <div id="main">
@@ -106,18 +106,55 @@
 <h2>Important Links</h2>
 <ul>
 <li><a href="https://github.com/earthshakira/portfolio-management">Github Repo</a></li>
-<li><a href="https://earthshakira.github.io/portfolio-management/jest_html_reporters.html">Testing Report</a></li>
+<li><a href="https://earthshakira.github.io/portfolio-management/jest_html_reporters.html">CI Testing Report</a></li>
 <li><a href="https://shubham-ar-portfolio-mgmt.herokuapp.com/swagger/">Heroku Swagger Client</a></li>
 </ul>
-<h2>Local Setup Requirements</h2>
-<p>To setup locally the API needs the redis-server to be running</p>
-<p>TODO: add versrion to docer command</p>
+<h2>Online Demo</h2>
+<ol>
+<li>Go to <a href="https://shubham-ar-portfolio-mgmt.herokuapp.com/swagger/">Heroku Swagger Client</a></li>
+<li>Use the <code>POST /user</code> endpoint and create a user for your self or use the test user credentials
+<ul>
+<li>Test user
+<ul>
+<li>username: test</li>
+<li>password: test</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Use the <code>AUTHORIZE</code> button on the top right to to log yourself in</li>
+<li>Now you can use all the other endpoints</li>
+<li>Swagger gives a  <code>Try it Out</code> button for all the endpoints where you can create a post body and make requests.</li>
+</ol>
+<h2>Running it Locally</h2>
+<h4>Start Redis</h4>
 <pre class="prettyprint source lang-bash"><code>docker run --name some-redis -p6379:6379 -d redis:6.2.5 redis-server --appendonly yes
+</code></pre>
+<h4>Start the App</h4>
+<pre class="prettyprint source"><code>npm install --also=dev
+npm start
 </code></pre>
 <h2>API Design</h2>
 <p><img src="https://i.imgur.com/FWXLZ14.png" alt="System Overview"></p>
+<ul>
+<li><strong>Swagger</strong> acts like a makeshift ui for us allowing us to make requests to our app</li>
+<li><strong>Nodejs</strong> performs the following tasks:
+<ul>
+<li>User Management with BasicAuth</li>
+<li>Request Validation</li>
+<li>Acts as a Data Abstraction Layer</li>
+</ul>
+</li>
+<li><strong>Redis</strong> is our data backend
+<ul>
+<li>Persists Data to disk</li>
+<li>Uses <a href="https://earthshakira.github.io/portfolio-management/module-LuaScripts.html">Lua Scripts</a> to make all Trade Ops <em>Atomic</em></li>
+<li>Gives superfast data access with <em>HashMaps</em>, <em>SortedSets</em> and <em>Counters</em></li>
+</ul>
+</li>
+</ul>
 <h3>ER Diagram</h3>
-<p><img src="https://i.imgur.com/QMOCYo4.png" alt="ER Diagram"></p>
+<p><img src="https://i.imgur.com/ztceaZJ.png" alt="ER Diagram"></p>
 <h3></h3>
     </article>
   </section>

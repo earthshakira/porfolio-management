@@ -76,7 +76,7 @@
       Github Repo
     </a><br>
     <a href="https://earthshakira.github.io/portfolio-management/jest_html_reporters.html" target="_blank">
-      Testing Report
+      CI Testing Report
     </a><br>
     <a href="https://shubham-ar-portfolio-mgmt.herokuapp.com/swagger/" target="_blank">
       Heroku Swagger Client
@@ -86,7 +86,7 @@
   
     
 
-    <h3>Classes</h3><ul><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li></ul></li><li id="TradeList-nav"><a href="module-Models.TradeList.html">TradeList</a></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="Enums-nav"><a href="module-Enums.html">Enums</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-getAllTrades-nav"><a href="module-RedisBackend.html#.getAllTrades">getAllTrades</a></li><li data-type="method" id="RedisBackend-getPortfolio-nav"><a href="module-RedisBackend.html#.getPortfolio">getPortfolio</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
+    <h3>Classes</h3><ul><li id="Portfolio-nav"><a href="module-Models.Portfolio.html">Portfolio</a><ul class='methods'><li data-type="method" id="Portfolio-get-nav"><a href="module-Models.Portfolio.html#get">get</a></li><li data-type="method" id="Portfolio-getReturns-nav"><a href="module-Models.Portfolio.html#getReturns">getReturns</a></li></ul></li><li id="Trade-nav"><a href="module-Models.Trade.html">Trade</a><ul class='methods'><li data-type="method" id="Trade-delete-nav"><a href="module-Models.Trade.html#delete">delete</a></li><li data-type="method" id="Trade-order-nav"><a href="module-Models.Trade.html#order">order</a></li><li data-type="method" id="Trade-update-nav"><a href="module-Models.Trade.html#update">update</a></li></ul></li><li id="TradeList-nav"><a href="module-Models.TradeList.html">TradeList</a><ul class='methods'><li data-type="method" id="TradeList-get-nav"><a href="module-Models.TradeList.html#get">get</a></li></ul></li></ul><h3>Modules</h3><ul><li id="Backend-nav"><a href="module-Backend.html">Backend</a></li><li id="LuaScripts-nav"><a href="module-LuaScripts.html">LuaScripts</a></li><li id="Models-nav"><a href="module-Models.html">Models</a></li><li id="RedisBackend-nav"><a href="module-RedisBackend.html">RedisBackend</a><ul class='methods'><li data-type="method" id="RedisBackend-buySecurity-nav"><a href="module-RedisBackend.html#.buySecurity">buySecurity</a></li><li data-type="method" id="RedisBackend-createUser-nav"><a href="module-RedisBackend.html#.createUser">createUser</a></li><li data-type="method" id="RedisBackend-getAllTrades-nav"><a href="module-RedisBackend.html#.getAllTrades">getAllTrades</a></li><li data-type="method" id="RedisBackend-getPortfolio-nav"><a href="module-RedisBackend.html#.getPortfolio">getPortfolio</a></li><li data-type="method" id="RedisBackend-init-nav"><a href="module-RedisBackend.html#.init">init</a></li><li data-type="method" id="RedisBackend-reset-nav"><a href="module-RedisBackend.html#.reset">reset</a></li><li data-type="method" id="RedisBackend-sellSecurity-nav"><a href="module-RedisBackend.html#.sellSecurity">sellSecurity</a></li><li data-type="method" id="RedisBackend-userAuthorizer-nav"><a href="module-RedisBackend.html#.userAuthorizer">userAuthorizer</a></li></ul></li><li id="TradeEndpoints-nav"><a href="module-TradeEndpoints.html">TradeEndpoints</a><ul class='methods'><li data-type="method" id="TradeEndpoints-validateTradePayload-nav"><a href="module-TradeEndpoints.html#~validateTradePayload">validateTradePayload</a></li></ul></li></ul>
   </nav>
   
   <div id="main">
@@ -108,6 +108,8 @@
 
 const { ReplyError } = require('redis');
 const backend = require('./backend')
+
+const MAGIC_RETURNS_PRICE = 100
 
 /**
  * The Trade class is used as a container for handing Trade related Operations
@@ -131,7 +133,8 @@ exports.Trade = class {
         this.amount = price*shares*100
     }
     /**
-     * The order method executes an order
+     * The order method executes an order for this constructor, it internally 
+     * uses 2 separate calls depending on wether the trade was a `BUY` or `SELL`
      */
     async order() {
         let r = null
@@ -145,6 +148,13 @@ exports.Trade = class {
         return r
     }
 
+    /**
+     * Given a TradeId it gives all the fields of trade to the backend, 
+     * for this method the fields are optional and supports any combination 
+     * of missing fields, it's strongly consistent and atomic and will raise
+     * errors on bad updates.
+     * @param {number} tradeId 
+     */
     async update(tradeId) {
         let r = await backend.updateSecurity(tradeId,this.user,this.symbol,this.price * 100 || this.price,this.shares,this.type)
         r.totalCost = (r.totalCost/100).toFixed(2)
@@ -152,6 +162,11 @@ exports.Trade = class {
         return r
     }
 
+    /**
+     * Delete's a trade given it's concistent, it uses the same script of update
+     * and is anologus to updating the trades value to (BUY,0 stocks for 0 price)
+     * @param {number} tradeId 
+     */
     async delete(tradeId) {
         let r = await backend.updateSecurity(tradeId,this.user,this.symbol,this.price * 100 || this.price,this.shares,this.type,1)
         r.totalCost = (r.totalCost/100).toFixed(2)
@@ -160,15 +175,19 @@ exports.Trade = class {
     }
 }
 
-
+/**
+ * This class is used to manage the fetching of symbol wise trades for a user
+ * @export @final
+ */
 exports.TradeList = class {
     /**
-     * @param  {string} user user who did this trade
+     * @param  {string} user
      */
      constructor(user){
         this.user = user
     }
 
+    /** Gets the list of for the current user and groups them by symbol */
     async get() {
         let trades = await backend.getAllTrades(this.user)
         let tradesMap = {}
@@ -190,11 +209,22 @@ exports.TradeList = class {
         })
     }
 }
+
+
+/**
+ * It fetches the portfolio of a user and returns 
+ * @export @final
+ */
 exports.Portfolio = class {
+
+    /**
+     * @param  {string} user 
+     */
     constructor(user){
         this.user = user
     }
 
+    /** Gets the portfolio for all the symbols traded by the user */
     async get() {
         let items = await backend.getPortfolio(this.user)
         items.forEach(trade => {
@@ -210,6 +240,16 @@ exports.Portfolio = class {
             return 0
         })
         return items
+    }
+
+    /** Uses the portfolio data and calculates the cumulative returns over all the stocks */
+    async getReturns() {
+        let portfolioData = await this.get()
+        let returns = 0
+        portfolioData.forEach(item => {
+            returns += (MAGIC_RETURNS_PRICE - parseFloat(item.price)) * item.shares
+        })
+        return {returns}
     }
 }</code></pre>
   </article>
