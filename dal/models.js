@@ -23,24 +23,36 @@ exports.Trade = class {
         this.symbol = symbol
         this.price = price,
         this.shares = shares
+        /** Stores amount in the Fixed point representation */
         this.amount = price*shares*100
     }
     /**
      * The order method executes an order
      */
     async order() {
-        let res = null
-        try {
-            if (this.type == 'B')
-                res = await backend.buySecurity(this.user,this.symbol,this.amount,this.shares);
-            else
-                res = await backend.sellSecurity(this.user,this.symbol,this.amount,this.shares);
-          } catch (error) {
-            if (error == new ReplyError('Sell Not Possible for Symbol')){
-                throw EvalError("Improper Sell")
-            }
-          }
-        return res   
+        let r = null
+        if (this.type == 'B')
+            r = await backend.buySecurity(this.user,this.symbol,this.amount,this.shares);
+        else
+            r = await backend.sellSecurity(this.user,this.symbol,this.amount,this.shares);
+        
+        r.totalCost = (r.totalCost/100).toFixed(2)
+        r.averagePrice = (r.averagePrice/100).toFixed(2)
+        return r
+    }
+
+    async update(tradeId) {
+        let r = await backend.updateSecurity(tradeId,this.user,this.symbol,this.price * 100 || this.price,this.shares,this.type)
+        r.totalCost = (r.totalCost/100).toFixed(2)
+        r.averagePrice = (r.averagePrice/100).toFixed(2)
+        return r
+    }
+
+    async delete(tradeId) {
+        let r = await backend.updateSecurity(tradeId,this.user,this.symbol,this.price * 100 || this.price,this.shares,this.type,1)
+        r.totalCost = (r.totalCost/100).toFixed(2)
+        r.averagePrice = (r.averagePrice/100).toFixed(2)
+        return r
     }
 }
 

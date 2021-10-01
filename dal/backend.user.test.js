@@ -2,9 +2,12 @@ const { expect } = require('@jest/globals');
 const { ReplyError } = require('redis');
 const { async } = require('regenerator-runtime');
 const backend = require('./backend')
+const {promisify} = require('util')
+
+let asyncAuthorizer = promisify(backend.userAuthorizer).bind(backend)
 
 beforeAll(async() => {
-    backend.init("t")
+    backend.init()
     await backend.reset()
 });
 
@@ -20,11 +23,12 @@ test('Duplicate User', async () => {
 })
 
 test('User Authorization Success', async () => {
-    let response = await backend.userAuthorizer("test","test")
-    expect(response).toBe("1")
+    
+    let response = await asyncAuthorizer("test","test")
+    expect(response).toBe(true)
 })
 
 test('User Authorization Failing', async () => {
-    let response = await backend.userAuthorizer("test","test2")
-    expect(response).toBe(null)
+    let response = await asyncAuthorizer("test","test2")
+    expect(response).toBe(false)
 })

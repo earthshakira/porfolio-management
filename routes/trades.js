@@ -10,6 +10,27 @@ const models = require('../dal/models');
  */
 const router = express.Router();
 
+
+let validateTradeType = (payload) => {
+    if (payload.tradeType != "BUY" && payload.tradeType != "SELL") {
+        return [`Incorrect 'tradeType' can only be BUY or SELL got '${payload.tradeType}'`]
+    } 
+    return []
+}
+
+let validateQuantity = (payload) => {
+    if (!(payload.quantity > 0 && parseInt(payload.quantity) == payload.quantity))
+        return [`'quantity' must be a positive integer got '${payload.quantity}'`]
+    return []
+}
+
+let validatePrice = (payload) => {
+    if (!(payload.price > 0 && parseInt(payload.price*100) == payload.price * 100))
+        return [`'price' must be a positive float with atmost 2 decimals got '${payload.price}'`]
+    return []
+}
+
+
 /**
  * We validate the payload to ensure input it check the conditions
  *  1. Required Fields are present
@@ -21,16 +42,13 @@ let validateTradePayload = (payload) => {
     let requiredFields = ["tradeType","quantity","price","tickerSymbol"]
     let errors = []
     for(let field of requiredFields)
-        if (!payload[field])
+        if (!(field in payload))
             errors.push(`'${field}' required but not found`)
 
-    if (payload.tradeType != "BUY" && payload.tradeType != "SELL") {
-        errors.push(`Incorrect 'tradeType' can only be BUY or SELL got '${payload.tradeType}'`)
-    } 
-    if (!(payload.quantity > 0 && parseInt(payload.quantity) == payload.quantity))
-        errors.push(`'quantity' must be a positive integer got '${payload.quantity}'`)
-    if (!(payload.price > 0 && parseInt(payload.price*100) == payload.price * 100))
-        errors.push(`'quantity' must be a positive float with atmost 2 decimals got '${payload.price}'`)
+    errors.push(...validateTradeType(payload))
+    errors.push(...validateQuantity(payload))
+    errors.push(...validatePrice(payload))
+    
     return errors
 }
 
@@ -49,12 +67,16 @@ router.post('/', async function(req, res) {
         res.json(errors)
         return
     }
-    let {tradeType,tickerSymbol,price,quantity} = payload;
-    let trade = new models.Trade(req.auth.user,tradeType == 'BUY' ? 'B' : 'S',tickerSymbol,price,quantity)
-    let resp = await trade.order()
-    console.log(resp)
-    return res.json({foo:"bar"})
-
+    try {
+        let {tradeType,tickerSymbol,price,quantity} = payload;
+        let trade = new models.Trade(req.auth.user,tradeType == 'BUY' ? 'B' : 'S',tickerSymbol,price,quantity)
+        let resp = await trade.order()
+        res.json(resp)
+    } catch(error) {
+        res.status(400);
+        res.json([error.toString()])
+    }
+    
 });
 
 router.put('/:tradeId/', function(req, res, next) {
