@@ -30,6 +30,5 @@ test('User Authorization Success', async () => {
 
 test('User Authorization Failing', async () => {
     let response = await asyncAuthorizer("test","test2")
-    console.log(response)
     expect(response).toEqual(false)
 })

@@ -43,6 +43,7 @@ end
 
 if ARGV[4] ~= '' then -- shares were provided
     newQuantity = tonumber(ARGV[4])
+    newAmount = oldPrice * newQuantity
 end
 
 if ARGV[3] ~= '' then -- price was provided
@@ -150,7 +151,7 @@ else    -- Symbol has changed so we perform a delete type operation and add oper
         local ntradeId,nTradeType,nSymbol,nAmount,nQuantity = cmsgpack.unpack(t)
         if ntradeId > ptradeId and first == 1 then
             first = 0
-            if nTradeType == "B" then -- process a buy trade
+            if newTradeType == "B" then -- process a buy trade
                 bstateAmount = bstateAmount + newAmount
                 bstateQuantity = bstateQuantity + newQuantity
             else                      -- process a sell trade

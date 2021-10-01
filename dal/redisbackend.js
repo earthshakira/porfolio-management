@@ -1,11 +1,7 @@
 /**
  * This is an implementation for the backend, which handles all calls to redis 
- * It also formats input and output to make it more usable for our case
+ * It also formats input and output formatting to make it more usable for our case
  * 
- *    | Keys        | Description |
- *    | ----------- | ----------- |
- *    | auth.{username}:{password}      | Title       |
- *    | user.{username}   | {password}        |
  * @module RedisBackend
  */
 
@@ -111,6 +107,16 @@ exports.sellSecurity = async function(user,tickerSymbol,price,quantity) {
   return decodeTrade(r)
 }
 
+/**
+ * Fires the sellSecurity script. {@link module:LuaScripts.sellSecurity}
+ * @param  {string} tradeId
+ * @param  {string} user
+ * @param  {string} [tickerSymbol]
+ * @param  {number} [price]
+ * @param  {number} [quantity]
+ * @param  {'B' | 'S'} [type]
+ * @param  {boolean} [isDelete]
+ */
 exports.updateSecurity = async function(tradeId,user,tickerSymbol,price,quantity,type,isDelete) {
   if(type === undefined) {
       type = ''

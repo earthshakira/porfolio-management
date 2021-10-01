@@ -29,7 +29,7 @@ test('Sell Shares', async () => {
     expect(order.averagePrice).toBe('0.00')
     expect(order.totalShares).toBe(0)
     expect(order.totalCost).toBe("0.00")
-    console.log(order)
+    
 })
 
 test('Invalid Sell', async () => {
@@ -44,7 +44,7 @@ test('Invalid Sell', async () => {
 test('Update Buy Trade[quantity] = 10 -> 8',async () => {
     let trade = new Trade('test','B','MINORUPDATE',100.50,10)
     let order = await trade.order()
-    console.log(order)
+    
     let tradeUpdate = new Trade('test','B','MINORUPDATE',100.50,8)
     order = await tradeUpdate.update(order.tradeId)
     expect(order.averagePrice).toBe('100.50')
@@ -55,13 +55,13 @@ test('Update Buy Trade[quantity] = 10 -> 8',async () => {
 test('Update Buy Trade[quantity] = 10 -> 8, after sell 9',async () => {
     let trade = new Trade('test','B','S-ERROR',100.50,10)
     let order = await trade.order()
-    console.log(order)
+    
     let strade = new Trade('test','S','S-ERROR',100.50,9)
     let sorder = await strade.order()
-    console.log(order)
+    
     let btrade = new Trade('test','B','S-ERROR',100.50,10)
     let border = await btrade.order()
-    console.log(order)
+    
     let tradeUpdate = new Trade('test','B','S-ERROR',100.50,8)
     order = tradeUpdate.update(order.tradeId)
     expect(order).rejects.toEqual(new ReplyError("Update is inconsistent"))
@@ -70,26 +70,26 @@ test('Update Buy Trade[quantity] = 10 -> 8, after sell 9',async () => {
 test('Update Buy Trade[quantity] = 10 -> 20, after sell 9',async () => {
     let trade = new Trade('test','B','B-20-FINE',100.50,10)
     let order = await trade.order()
-    console.log(order)
+    
     let strade = new Trade('test','S','B-20-FINE',100.50,9)
     let sorder = await strade.order()
-    console.log(order)
+    
     let btrade = new Trade('test','B','B-20-FINE',100.50,10)
     let border = await btrade.order()
-    console.log(order)
+    
     let tradeUpdate = new Trade('test','B','B-20-FINE',100.50,20)
     order = await tradeUpdate.update(order.tradeId)
-    console.log(order)
+    
     // expect(order).rejects.toEqual(new ReplyError("Update is inconsistent"))
 })
 
 test('Update Change Symbol',async () => {
     let trade = new Trade('test','B','symbA',100.50,10)
     let order = await trade.order()
-    console.log(order)
+    
     let tradeUpdate = new Trade('test','B','symbB',100.50,8)
     order = await tradeUpdate.update(order.tradeId)
-    console.log(order)
+    
     expect(order.averagePrice).toBe('100.50')
     expect(order.totalShares).toBe(8)
     expect(order.totalCost).toBe("804.00")
@@ -100,10 +100,10 @@ test('Update Change Symbol',async () => {
 test('DeleteTrade',async () => {
     let trade = new Trade('test','B','delA',100.50,10)
     let order = await trade.order()
-    console.log(order)
+    
     let tradeUpdate = new Trade('test')
     order = await tradeUpdate.delete(order.tradeId)
-    console.log("Delete Order",order)
+    
     expect(order.averagePrice).toBe('0.00')
     expect(order.totalShares).toBe(0)
     expect(order.totalCost).toBe("0.00")
@@ -114,11 +114,11 @@ test('DeleteTrade',async () => {
 test('DeleteTrade Error',async () => {
     let trade = new Trade('test','B','delError',100.50,10)
     let order = await trade.order()
-    console.log(order)
+    
 
     let strade = new Trade('test','S','delError',100.50,6)
     let sorder = await strade.order()
-    console.log(sorder)
+    
     
     let tradeUpdate = new Trade('test')
     order = tradeUpdate.delete(order.tradeId)
