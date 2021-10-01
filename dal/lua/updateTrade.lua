@@ -187,20 +187,26 @@ else    -- Symbol has changed so we perform a delete type operation and add oper
         end
     end
 
-
     rSymbol = newSymbol
     rAmount = bstateAmount
     rQuantity = bstateQuantity
 
-    
+    local av = 0
+    if stateQuantity > 0 then
+        av = stateAmount/stateQuantity
+    end
     redis.call('ZREMRANGEBYSCORE','symbol.'..ARGV[1]..ARGV[2],ptradeId,ptradeId)
     redis.call('HDEL','trades.'..ARGV[1],tradeId)
-    redis.call('HSET',portfolio,oldSymbol..'.p',stateAmount,oldSymbol..'.q',stateQuantity,oldSymbol..'.a',stateAmount/stateQuantity)
+    redis.call('HSET',portfolio,oldSymbol..'.p',stateAmount,oldSymbol..'.q',stateQuantity,oldSymbol..'.a',av)
     
+    local av = 0
+    if bstateQuantity > 0 then
+        av = bstateAmount/bstateQuantity
+    end
     local trade =  cmsgpack.pack(ptradeId,newTradeType,newSymbol,newAmount,newQuantity)
     redis.call('HSET','trades.'..ARGV[1],tradeId,trade)
     redis.call('ZADD','symbol.'..ARGV[1]..'.'..ARGV[2],ptradeId,trade)
-    redis.call('HSET',portfolio,newSymbol..'.p',bstateAmount,newSymbol..'.q',bstateQuantity,newSymbol..'.a',bstateAmount/bstateQuantity)
+    redis.call('HSET',portfolio,newSymbol..'.p',bstateAmount,newSymbol..'.q',bstateQuantity,newSymbol..'.a',av)
 end
 
 local av = 0

@@ -135,13 +135,21 @@ test('ListTrades',async () => {
 
     let tl = new TradeList('listTradesTest')
     
-    expect(await tl.get()).toEqual({
-        listA: [
-          {tradeId: 1,tradeType: 'BUY',symbol: 'listA',quantity: 10,price: '100.50'},
-          {tradeId: 3,tradeType: 'BUY',symbol: 'listA',quantity: 10,price: '100.50'},
-          {tradeId: 5,tradeType: 'SELL',symbol: 'listA',quantity: 10,price: '100.50'}
-        ],
-        listB: [{tradeId: 2,tradeType: 'BUY',symbol: 'listB',quantity: 10,price: '10.50'}],
-        listC: [{tradeId: 4,tradeType: 'BUY',symbol: 'listC',quantity: 10,price: '100.50'}]
-      })
+    expect(await tl.get()).toEqual([
+        {
+            "symbol": "listA", 
+            "trades": [
+                {"price": "100.50", "quantity": 10, "symbol": "listA", "tradeId": 1, "tradeType": "BUY"}, 
+                {"price": "100.50", "quantity": 10, "symbol": "listA", "tradeId": 3, "tradeType": "BUY"}, 
+                {"price": "100.50", "quantity": 10, "symbol": "listA", "tradeId": 5, "tradeType": "SELL"}]
+        }, {
+            "symbol": "listB", 
+            "trades": [
+                {"price": "10.50", "quantity": 10, "symbol": "listB", "tradeId": 2, "tradeType": "BUY"}]
+        }, {
+            "symbol": "listC", 
+            "trades": [
+                {"price": "100.50", "quantity": 10, "symbol": "listC", "tradeId": 4, "tradeType": "BUY"}]
+        }
+        ])
 })
